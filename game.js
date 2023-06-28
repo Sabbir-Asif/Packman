@@ -129,7 +129,7 @@ let drawRemainingLives = () =>
 {
     canvasContext.font = "20px Emulogic";
     canvasContext.fillStyle = "white";
-    canvasContext.fillText("Lives : ", 220), oneBlockSize * (map.length + 1);
+    canvasContext.fillText("Lives : ", 220, oneBlockSize * (map.length + 1));
 
     for(let i = 0; i < lives; i++)
     {
@@ -228,7 +228,7 @@ let createGhosts = () =>
     ghosts = [];
     for(let i = 0; i < ghostCount * 2; i++)
     {
-        let newGhost = new ghostCount(
+        let newGhost = new Ghost(
             9 * oneBlockSize + (i % 2 == 0 ? 0 : 1) * oneBlockSize,
             10 * oneBlockSize + (i % 2 == 0 ? 0 : 1) * oneBlockSize,
             oneBlockSize,
