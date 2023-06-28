@@ -185,5 +185,147 @@ class Ghost {
                 moves : [],
             },
         ];
+        while(queue.length > 0)
+        {
+            let poped = queue.shift();
+            if(poped.x == destX && poped.y == destY)
+            {
+                return poped.moves[0];
+            }
+            else
+            {
+                mp[poped.y][poped.x] = 1;
+                let neighborList = this.addNeighbors(poped, mp);
+                for(let i = 0; i < neighborList.length; i++)
+                {
+                    queue.push(neighborList[i]);
+                }
+            }
+        }
+
+        return 1;
+    }
+
+    addNeighbors(poped, mp)
+    {
+        let queue = [];
+        let numOfRows = mp.length;
+        let numOfColumns = mp[0].length;
+        if(
+            poped.x - 1 >= 0 &&
+            poped.x - 1 < numOfRows &&
+            mp[poped.y][poped.x - 1] != 1
+        )
+        {
+            let tempMoves = poped.moves.slice();
+            tempMoves.push(DIRECTION_LEFT);
+            queue.push({x: poped.x - 1, y: poped.y, moves: tempMoves});
+        }
+        if(
+            poped.x + 1 >= 0 &&
+            poped.x + 1 < numOfRows &&
+            mp[poped.y][poped.x + 1] != 1
+        )
+        {
+            let tempMoves = poped.moves.slice();
+            tempMoves.push(DIRECTION_RIGHT);
+            queue.push({ x: poped.x + 1, y: poped.y, moves: tempMoves });
+        }
+        if(
+            poped.y - 1 >= 0 &&
+            poped.y - 1 < numOfColumns &&
+            mp[poped.y - 1][poped.x] != 1
+        )
+        {
+            let tempMoves = poped.moves.slice();
+            tempMoves.push(DIRECTION_UP);
+            queue.push({ x: poped.x, y: poped.y - 1, moves: tempMoves });
+        }
+        if(
+            poped.y + 1 >= 0 &&
+            poped.y + 1 < numOfColumns &&
+            mp[poped.y + 1][poped.x] != 1
+        )
+        {
+            let tempMoves = poped.moves.slice();
+            tempMoves.push(DIRECTION_BOTTOM);
+            queue.push({ x: poped.x, y: poped.y + 1, moves: tempMoves });
+        }
+
+        return queue;
+    }
+
+    getMapX()
+    {
+        let mapX = parseInt(this.x / oneBlockSize);
+        return mapX;
+    }
+
+    getMapY()
+    {
+        let mapY = parseInt(this.y / oneBlockSize);
+        return mapY;
+    }
+
+    getMapXRightSide()
+    {
+        let mapX = parseInt((this.x * 0.99 + oneBlockSize) / oneBlockSize);
+        return mapX;
+    }
+
+    getMapYRightSide()
+    {
+        let mapY = parseInt((this.y * 0.99 + oneBlockSize) / oneBlockSize);
+        return mapY;
+    }
+
+    changeAnimation()
+    {
+        this.currentFrame = this.currentFrame ==
+        this.frameCount ? 1 : this.currentFrame + 1;
+    }
+
+    draw()
+    {
+        canvasContext.save();
+        canvasContext.drawImage(
+            ghostFrames,
+            this.imageX,
+            this.imageY,
+            this.imageWidth,
+            this.imageHeight,
+            this.x,
+            this.y,
+            this.width,
+            this.height
+        );
+
+        canvasContext.restore();
+        canvasContext.beginPath();
+        canvasContext.strokeStyle = "red";
+        canvasContext.arc(
+            this.x + oneBlockSize / 2,
+            this.y + oneBlockSize / 2,
+            this.range * oneBlockSize,
+            0,
+            2 * Math.PI
+        );
+        canvasContext.stroke();
     }
 }
+
+let updateGhosts = () => 
+{
+    for(let i = 0; i < ghosts.length; i++)
+    {
+        ghosts[i].moveprocess();
+    }
+};
+
+let drawGhosts = () =>
+{
+    for(let i = 0; i < ghosts.length; i++)
+    {
+        ghosts[i].draw();
+    }
+};
