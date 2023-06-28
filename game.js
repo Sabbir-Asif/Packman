@@ -64,7 +64,7 @@ let map = [
 
 let createNewPacman = () => 
 {
-    pacman = new pacman(
+    pacman = new Pacman(
         oneBlockSize,
         oneBlockSize,
         oneBlockSize,
