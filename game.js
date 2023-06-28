@@ -223,5 +223,53 @@ let drawWalls = () =>
     }
 }
 
+let createGhosts = () =>
+{
+    ghosts = [];
+    for(let i = 0; i < ghostCount * 2; i++)
+    {
+        let newGhost = new ghostCount(
+            9 * oneBlockSize + (i % 2 == 0 ? 0 : 1) * oneBlockSize,
+            10 * oneBlockSize + (i % 2 == 0 ? 0 : 1) * oneBlockSize,
+            oneBlockSize,
+            oneBlockSize,
+            pacman.speed / 2,
+            ghostImageLocations[i % 4].x,
+            ghostImageLocations[i % 4].y,
+            124,
+            116,
+            6 + i
+        );
+        ghosts.push(newghost);
+    }
+};
+
+createNewPacman();
+createGhosts();
+gameLoop();
+
+window.addEventListener("keydown", (event) => 
+{
+    let k = event.keyCode;
+    setTimeout(() => 
+    {
+        if(k == 37 || k == 65)
+        {
+            pacman.nextDirection = DIRECTION_LEFT;
+        }
+        else if(k == 38 || k == 87)
+        {
+            pacman.nextDirection = DIRECTION_UP;
+        }
+        else if(k == 39 || k == 68)
+        {
+            pacman.nextDirection = DIRECTION_RIGHT;
+        }
+        else if(k == 40 || k == 83)
+        {
+            pacman.nextDirection = DIRECTION_BOTTOM;
+        }
+    }, 1);
+});
 
 
